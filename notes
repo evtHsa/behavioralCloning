@@ -3,6 +3,9 @@
 ** csv fields
    center,left,right,steering,throttle,brake,speed
 * where things were found
+** train_test_split
+   https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
+
 ** steering angle correction for side cameras
 https://towardsdatascience.com/teaching-cars-to-drive-using-deep-learning-steering-angle-prediction-5773154608f2
 ** udacity data set link from student center
