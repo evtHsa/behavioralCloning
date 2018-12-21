@@ -1,4 +1,9 @@
 ;-*- mode: outline -*-
+* misc
+** csv fields
+   center,left,right,steering,throttle,brake,speed
 * where things were found
+** steering angle correction for side cameras
+https://towardsdatascience.com/teaching-cars-to-drive-using-deep-learning-steering-angle-prediction-5773154608f2
 ** udacity data set link from student center
 https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip

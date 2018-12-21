@@ -13,7 +13,9 @@ sys.path.append("..")
 import pdb
 
 # support code
-from util import parse_csv
+from csv_parser import CsvParser
 
-mumble = parse_csv("data/driving_log.csv")
-pdb.set_trace()
+csv_parser = CsvParser("data/driving_log.csv")
+image_recs = csv_parser.get_image_recs()
+print("%d image_recs remaining" % len(image_recs))
+
