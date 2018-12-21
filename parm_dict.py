@@ -7,4 +7,5 @@
 
 too_slow = 0.1
 side_cam_angle_correction = 0.25
+debug_on_assert = True
 
