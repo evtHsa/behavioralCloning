@@ -46,4 +46,7 @@ class CsvParser:
     def get_image_recs(self):
         return self.image_recs
     
+    def size(self):
+        return len(self.image_recs)
+    
         
