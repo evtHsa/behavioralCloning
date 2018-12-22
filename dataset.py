@@ -23,6 +23,9 @@ class DataSet:
 
     def size(self):
         return self._csv_parser.size()
+
+    def ix_range(self, xory, set, lo, hi):
+        return self.ixes[xory][set][lo:hi]
     
     def get_random_ixes(self):
         max = self._csv_parser.size()
@@ -59,18 +62,15 @@ class Generator:
         self.batch_size = batch_size
         self.set_slct = set_slct
         self._dataset = dataset
-        self.batch_ix = 0
+        self.batch_start = 0
 
     def start(self):
-        #FIXME: brk("now you need to read the images and return images & labels")
+        brk("now you need to read the images and return images & labels")
         while True:
-            FIXME = -1
-            if self.batch_ix + self.batch_size > self._dataset.size():
-                return None
-            else:
-                print("Generator(%s): ix = %d, bs = %d" % (self.set_slct,
-                                                           self.batch_ix, self.batch_size))
-                self.batch_ix += self.batch_size
-                yield(self.batch_ix - self.batch_size)
+           #for ix in self._dataset.ix_range(
+            print("Generator(%s): ix = %d, bs = %d" % (self.set_slct,
+                                                       self.batch_start, self.batch_size))
+            self.batch_start += self.batch_size
+            yield(self.batch_start - self.batch_size)
     
         
