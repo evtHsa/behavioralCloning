@@ -9,3 +9,7 @@ too_slow = 0.1
 side_cam_angle_correction = 0.25
 debug_on_assert = True
 random_img_set_size = 4
+test_set_fraction = 0.25
+train_test__random_state = 42
+train_batch_size = 5
+test_batch_size = 2

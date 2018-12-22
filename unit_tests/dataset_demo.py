@@ -14,9 +14,15 @@ import pdb
 
 # support code
 from dataset import DataSet
+from dataset import Generator #fixme: probalby should not be exposed?
 from util import brk
 
 ds = DataSet("data/driving_log.csv")
-ds.show_random_img_sample()
+#ds.show_random_img_sample()
 
-brk("split into test/train")
+_gen = Generator(2, [1,2,3,4,5], ds)
+gen = _gen.start()
+
+while True:
+    next(gen)
+    
