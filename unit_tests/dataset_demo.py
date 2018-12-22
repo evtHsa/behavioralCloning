@@ -18,11 +18,11 @@ from dataset import Generator #fixme: probalby should not be exposed?
 from util import brk
 
 ds = DataSet("data/driving_log.csv")
-#ds.show_random_img_sample()
+#FIXME:ds.show_random_img_sample()
 
-_gen = Generator(2, [1,2,3,4,5], ds)
+_gen = Generator(2, 'train', ds)
 gen = _gen.start()
 
-while True:
+for i in range(10):
     next(gen)
     

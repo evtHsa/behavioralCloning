@@ -13,7 +13,7 @@ def _assert(cond):
                 really_assert = True
                 print("assertion failed")
 
-                ut.brk()
+                brk()
                 if pd.debug_on_assert:
                         pdb.set_trace()
                 _quit()
