@@ -54,7 +54,7 @@ class Generator:
         self.batch_ix = 0
 
     def start(self):
-        brk("now you need to
+        brk("now you need to read the images and return images & labels")
         i = 0
         while i < 3:
             print("Generator::init -> %d" % i)
