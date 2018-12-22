@@ -15,8 +15,7 @@ class DataSet:
     def __init__(self, csv_path):
         self._csv_parser = CsvParser(csv_path)
         self._img_viewer = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
-        self.ixes = { 'X' : {'train' : None, 'test' : None},
-                           'y' : {'train' : None, 'test' : None}}
+        self.ixes = { 'train' : None, 'test' : None }
         self.split_train_test()
         self.gen_train = Generator(pd.train_batch_size, 'train', self)
         self.gen_test = Generator(pd.test_batch_size, 'test', self)
@@ -24,8 +23,8 @@ class DataSet:
     def size(self):
         return self._csv_parser.size()
 
-    def ix_range(self, xory, set, lo, hi):
-        return self.ixes[xory][set][lo:hi]
+    def ix_range(self, set, lo, hi):
+        return self.ixes[set][lo:hi]
     
     def get_random_ixes(self):
         max = self._csv_parser.size()
@@ -51,11 +50,11 @@ class DataSet:
     def split_train_test(self):
         ixes = range(self._csv_parser.size())
         ixes = ixes[1:10]
-        (self.ixes['X']['train'], self.ixes['X']['test'],
-         self.ixes['y']['train'], self.ixes['y']['test']) = train_test_split(ixes, ixes,
-                                                                             test_size = pd.test_set_fraction,
-                                                                             random_state =
-                                                                             pd.train_test__random_state)
+        #the X and y indices are the same since both come from the same rec
+        self.ixes['train'], self.ixes['test'], _, _ = \
+                train_test_split(ixes, ixes, test_size = pd.test_set_fraction,
+                                 random_state = pd.train_test__random_state)
+         
 class Generator:
     def __init__(self, batch_size, set_slct, dataset):
         _assert((set_slct == 'train') or (set_slct == 'test'))
