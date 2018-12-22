@@ -3,6 +3,7 @@
 import pdb
 import csv
 import parm_dict as pd
+from ImgUtil import imRead
 
 class CsvParser:
     def __init__(self, csv_path):
@@ -51,5 +52,17 @@ class CsvParser:
 
     def get_rec(self, ix):
         return self.image_recs[ix]
+
+    def img_path(self, rel_path):
+        return pd.image_dir + '/' + rel_path
+
+    def get_img(self,ix):
+        rec = self.get_rec(ix)
+        img = imRead(self.img_path(rec['img']), reader="cv2")
+        return img
+    
+    def get_label(self,ix):
+        rec = self.get_rec(ix)
+        return rec['steering']
     
         

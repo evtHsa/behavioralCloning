@@ -13,16 +13,30 @@ sys.path.append("..")
 import pdb
 
 # support code
+
+from ImgViewer import ImgViewer
 from dataset import DataSet
 from dataset import Generator #fixme: probalby should not be exposed?
 from util import brk
+import numpy as np
+
+def view_stuff(X,y, vwr):
+    for i in range(len(X)):
+        X[i].title += '(' + str(y[i]) + ')'
+        vwr.push(X[i], str(y[i]))
+    vwr.show()
+    vwr.flush()
+
+_vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
 
 ds = DataSet("data/driving_log.csv")
-#FIXME:ds.show_random_img_sample()
 
-_gen = Generator(2, 'train', ds)
-gen = _gen.start()
+print("FIXME: show random sample disabled")
+#ds.show_random_img_sample()
 
+gen = Generator(2, 'train', ds)
 for i in range(10):
-    next(gen)
-    
+    for (X, y) in gen.next():
+        view_stuff(X,y, _vwr)
+        if len(X) == 0:
+            break

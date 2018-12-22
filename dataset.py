@@ -3,13 +3,15 @@
 import pdb
 import csv
 import parm_dict as pd
+
 from util import brk
 from util import _assert
+
 from csv_parser import CsvParser
 from random import randint
-from ImgUtil import imRead
 from ImgViewer import ImgViewer
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 class DataSet:
     def __init__(self, csv_path):
@@ -23,8 +25,8 @@ class DataSet:
     def size(self):
         return self._csv_parser.size()
 
-    def ix_range(self, set, lo, hi):
-        return self.ixes[set][lo:hi]
+    def ix_range(self, set, start, len):
+        return self.ixes[set][start:start+len]
     
     def get_random_ixes(self):
         max = self._csv_parser.size()
@@ -36,16 +38,19 @@ class DataSet:
     def show_random_img_sample(self):
         ixes = self.get_random_ixes()
         for ix in ixes:
-            csv_rec = self.parse_csv_rec(ix)
-            img_name = "./data/"+csv_rec['features']['img']
-            img = imRead(img_name, reader="cv2")
-            self._img_viewer.push(img, ("<%d>" % ix) + csv_rec['features']['img'])
+            csv_rec = self.get_rec(ix)
+            img = self.get_img(ix) # FIXME: slight wast looking up rec 2nd time
+            self._img_viewer.push(img, ("<%d>" % ix) + csv_rec['img'])
         self._img_viewer.show()
 
-    def parse_csv_rec(self, ix):
-        rec = self._csv_parser.get_rec(ix)
-        ret = { 'features' : { 'img' : rec['img']}, 'label' : rec['steering'] }
-        return ret
+    def get_rec(self, ix):
+        return  self._csv_parser.get_rec(ix)
+
+    def get_img(self, ix):
+        return  self._csv_parser.get_img(ix)
+
+    def get_label(self, ix):
+        return  self._csv_parser.get_label(ix)
 
     def split_train_test(self):
         ixes = range(self._csv_parser.size())
@@ -63,13 +68,18 @@ class Generator:
         self._dataset = dataset
         self.batch_start = 0
 
-    def start(self):
-        brk("now you need to read the images and return images & labels")
+    def next(self):
         while True:
-           #for ix in self._dataset.ix_range(
             print("Generator(%s): ix = %d, bs = %d" % (self.set_slct,
                                                        self.batch_start, self.batch_size))
+            X = []
+            y = []
+            for ix in self._dataset.ix_range(self.set_slct, self.batch_start,
+                                             self.batch_size):
+                X.append(self._dataset.get_img(ix))
+                y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
-            yield(self.batch_start - self.batch_size)
-    
+            ret = (np.array(X), np.array(y))
+            yield ret
+                
         

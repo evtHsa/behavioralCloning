@@ -13,3 +13,4 @@ test_set_fraction = 0.25
 train_test__random_state = 42
 train_batch_size = 5
 test_batch_size = 2
+image_dir = "./data"
