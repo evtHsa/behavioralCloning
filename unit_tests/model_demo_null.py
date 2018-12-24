@@ -16,12 +16,14 @@ import pdb
 
 from ImgViewer import ImgViewer
 from dataset import DataSet
-from dataset import Generator #fixme: probalby should not be exposed?
+from dataset import BatchGenerator #fixme: probalby should not be exposed?
 from util import brk
+from util import traceback_exception
 import numpy as np
 from model_null import null_model as model
 from keras.callbacks import ModelCheckpoint, Callback
 import parm_dict as pd
+
 
 def view_stuff(X,y, vwr):
     for i in range(len(X)):
@@ -37,19 +39,22 @@ ds = DataSet("data/driving_log.csv")
 print("FIXME: show random sample disabled")
 #ds.show_random_img_sample()
 
-t_gen = Generator(2, 'train', ds)
-v_gen = Generator(2, 'train', ds)
-
 # basic model stuff
 
 #checkpointing
 #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/ModelCheckpoint
 checkpoint = ModelCheckpoint('model{epoch:02d}.h5')
 
-history = model.fit_generator(t_gen, validation_data=v_gen,
-                              nb_val_samples=v_gen.num_samples(), 
-                              samples_per_epoch=v_gen.samples_per_epoch(),
-                              nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
-                              callbacks=[checkpoint])
+#https://keras.io/models/sequential/
+try:
+    history = model.fit_generator(ds.gen_train, validation_data=ds.gen_valid,
+                                  nb_val_samples=ds.gen_valid.num_samples(), 
+                                  samples_per_epoch=v_gen.samples_per_epoch(),
+                                  nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
+                                  callbacks=[checkpoint])
+except Exception as ex:
+    traceback_exception(ex)
+    brk("bad ju-ju")
+    
 print(model.summary())
 brk("wasn'''t that speshul")

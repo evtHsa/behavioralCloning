@@ -19,8 +19,9 @@ class DataSet:
         self._img_viewer = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
         self.ixes = { 'train' : None, 'test' : None }
         self.split_train_test()
-        self.gen_train = Generator(pd.train_batch_size, 'train', self)
-        self.gen_test = Generator(pd.test_batch_size, 'test', self)
+        self.gen_train = BatchGenerator(pd.train_batch_size, 'train', self)
+        self.gen_valid = BatchGenerator(pd.train_batch_size, 'train', self)
+        self.gen_test = BatchGenerator(pd.test_batch_size, 'test', self)
 
     def size(self):
         return self._csv_parser.size()
@@ -62,8 +63,9 @@ class DataSet:
         self.ixes['train'], self.ixes['test'], _, _ = \
                 train_test_split(ixes, ixes, test_size = pd.test_set_fraction,
                                  random_state = pd.train_test__random_state)
-         
-class Generator:
+
+class BatchGenerator:
+    #https://stackoverflow.com/questions/42983569/how-to-write-a-generator-class
     def __init__(self, batch_size, set_slct, dataset):
         _assert((set_slct == 'train') or (set_slct == 'test'))
         self.batch_size = batch_size
@@ -76,7 +78,7 @@ class Generator:
     
     def __next__(self):
         while True:
-            print("Generator(%s): ix = %d, bs = %d" % (self.set_slct,
+            print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct,
                                                        self.batch_start, self.batch_size))
             X = []
             y = []
@@ -86,7 +88,7 @@ class Generator:
                 y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
             ret = (np.array(X), np.array(y))
-            yield ret
+            return ret
 
     def num_samples(self):
         return self._dataset.set_size(self.set_slct)

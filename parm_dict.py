@@ -11,7 +11,8 @@ debug_on_assert = True
 random_img_set_size = 4
 test_set_fraction = 0.25
 train_test__random_state = 42
-train_batch_size = 5
+train_batch_size = 2
+valid_batch_size = 2
 test_batch_size = 2
 image_dir = "./data"
 
