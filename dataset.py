@@ -43,7 +43,7 @@ class DataSet:
         ixes = self.get_random_ixes()
         for ix in ixes:
             csv_rec = self.get_rec(ix)
-            img = self.get_img(ix) # FIXME: slight wast looking up rec 2nd time
+            img = self.get_img(ix) # FIXME: slight waste looking up rec 2nd time
             self._img_viewer.push(img, ("<%d>" % ix) + csv_rec['img'])
         self._img_viewer.show()
 
