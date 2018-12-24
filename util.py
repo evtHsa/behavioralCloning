@@ -37,3 +37,17 @@ def traceback_exception(ex):
                                 filename=os.path.basename(filename),
                                 linenum=linenum, source=source,
                                 funcname=funcname))
+
+def existsKey(dict, key):
+        try:
+                val = dict[key]
+        except KeyError:
+                return False
+        return True
+                        
+one_shot_dict = { 'stooge' : 'curly'}
+
+def oneShotMsg(msg):
+        if not existsKey(one_shot_dict, msg):
+                print(msg)
+        one_shot_dict[msg] = msg
