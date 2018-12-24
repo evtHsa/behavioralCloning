@@ -49,6 +49,11 @@ class DataSet:
     def get_rec(self, ix):
         return  self._csv_parser.get_rec(ix)
 
+    def get_exemplar_img_size(self):
+        # assume they're all the same size
+        img = self._csv_parser.get_img(0)
+        return img.img_data.shape
+    
     def get_img(self, ix):
         ret = self._csv_parser.get_img(ix)
         oneShotMsg("img shape = " + str(ret.img_data.shape))
