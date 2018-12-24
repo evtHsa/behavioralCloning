@@ -16,7 +16,7 @@ import pdb
 
 from ImgViewer import ImgViewer
 from dataset import DataSet
-from dataset import Generator #fixme: probalby should not be exposed?
+from dataset import BatchGenerator
 from util import brk
 import numpy as np
 
@@ -34,9 +34,10 @@ ds = DataSet("data/driving_log.csv")
 print("FIXME: show random sample disabled")
 #ds.show_random_img_sample()
 
-gen = Generator(2, 'train', ds)
+gen = BatchGenerator(2, 'train', ds)
 for i in range(10):
-    for (X, y) in gen.next():
-        view_stuff(X,y, _vwr)
-        if len(X) == 0:
-            break
+    (X, y) = next(gen)
+    for x in X:
+        _vwr.push(x)
+    _vwr.show()
+    _vwr.flush()
