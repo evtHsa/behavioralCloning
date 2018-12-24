@@ -4,8 +4,7 @@ import pdb
 import csv
 import parm_dict as pd
 
-from util import brk
-from util import _assert
+from util import brk, _assert, oneShotMsg
 
 from csv_parser import CsvParser
 from random import randint
@@ -51,7 +50,9 @@ class DataSet:
         return  self._csv_parser.get_rec(ix)
 
     def get_img(self, ix):
-        return  self._csv_parser.get_img(ix)
+        ret = self._csv_parser.get_img(ix)
+        oneShotMsg("img shape = " + str(ret.img_data.shape))
+        return ret
 
     def get_label(self, ix):
         return  self._csv_parser.get_label(ix)
