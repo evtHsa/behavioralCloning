@@ -1,4 +1,7 @@
 ;-*- mode: outline -*-
+* keras
+** bn issues
+   https://github.com/keras-team/keras/issues/2827
 * misc
 ** csv fields
    center,left,right,steering,throttle,brake,speed
