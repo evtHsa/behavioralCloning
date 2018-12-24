@@ -14,3 +14,7 @@ train_test__random_state = 42
 train_batch_size = 5
 test_batch_size = 2
 image_dir = "./data"
+
+# model hyperparms
+num_epochs = 1
+keras_verbosity = 2

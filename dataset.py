@@ -27,6 +27,9 @@ class DataSet:
 
     def ix_range(self, set, start, len):
         return self.ixes[set][start:start+len]
+
+    def set_size(self, set):
+        return len(self.ixes[set])
     
     def get_random_ixes(self):
         max = self._csv_parser.size()
@@ -81,5 +84,11 @@ class Generator:
             self.batch_start += self.batch_size
             ret = (np.array(X), np.array(y))
             yield ret
+
+    def num_samples(self):
+        return self._dataset.set_size(self.set_slct)
                 
+    def samples_per_epoch(self):
+        return self.num_samples()  // self.batch_size #warning floor division
+
         
