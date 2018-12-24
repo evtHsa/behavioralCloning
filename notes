@@ -3,6 +3,8 @@
 ** csv fields
    center,left,right,steering,throttle,brake,speed
 * where things were found
+** starter nv model
+   https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
 ** train_test_split
    https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
 
