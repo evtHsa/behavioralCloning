@@ -1,11 +1,5 @@
-
-#from keras.layers.core import Dense, Activation, Flatten, Dropout, Lambda
-#from keras.layers.convolutional import Convolution2D
-#from keras.layers.pooling import MaxPooling2D
-#from keras.layers.advanced_activations import ELU
-#from keras.regularizers import l2, activity_l2
-
-# FIXME: get rid of the things we don't need for this project
+# just testing the basic infrastructure. as far as you'll get with this is keras
+# complaining that the dense layer dimensions are wrong
 
 from keras.layers.core import Dense
 from keras.models import Sequential, model_from_json
