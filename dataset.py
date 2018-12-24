@@ -71,7 +71,10 @@ class Generator:
         self._dataset = dataset
         self.batch_start = 0
 
-    def next(self):
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
         while True:
             print("Generator(%s): ix = %d, bs = %d" % (self.set_slct,
                                                        self.batch_start, self.batch_size))
