@@ -3,7 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import util as ut
-import ImgUtil as iu
+from util import brk
+import ImgUtil
     
 class ImgViewer:
     
@@ -29,7 +30,7 @@ class ImgViewer:
     def push(self, img,  debug=False):
         if not self.enabled:
             return
-        assert(type(img) is iu.Image)
+        assert(type(img) is ImgUtil.Image)
 
         self.img_obj_list.append(img)
 
@@ -77,7 +78,7 @@ class ImgViewer:
         # ex: vwr.show_immed([in_img, top_down])
         # ex: cache_dict['viewer'].show_immed([hls_binary_l])
         for img in img_list:
-            assert(type(img) is iu.Image)
+            assert(type(img) is ImgUtil.Image)
             plt.figure()
             plt.title(img.title)
             plt.imshow(img.img_data, cmap=img.cmap)
@@ -85,7 +86,7 @@ class ImgViewer:
 
     def show_immed_ndarray(self, img=None, title=None, img_type=None):
         assert(type(img) is np.ndarray)
-        tmp = iu.Image(img_data = img, title=title, img_type=img_type)
+        tmp = ImgUtil.Image(img_data = img, title=title, img_type=img_type)
         self.show_immed(tmp, title)
 
 def _view(vwr, img, title):
@@ -94,7 +95,7 @@ def _view(vwr, img, title):
         vwr.show_immed(img, title)
     
 def _push(vwr, img_obj):
-    assert(type(img_obj) is iu.Image)
+    assert(type(img_obj) is ImgUtil.Image)
     if vwr:
         vwr.push(img_obj)
 
