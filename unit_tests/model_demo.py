@@ -36,10 +36,11 @@ _vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
 
 ds = DataSet("data/driving_log.csv")
 
-print("FIXME: show random sample disabled")
-#ds.show_random_img_sample()
-
 # basic model stuff
+img_shape = ds.get_exemplar_img_size()
+print("img shape = ", str(img_shape))
+model = get_model(img_shape[0], img_shape[1])
+brk("check model")
 
 #checkpointing
 #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/ModelCheckpoint
