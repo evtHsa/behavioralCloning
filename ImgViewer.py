@@ -8,7 +8,8 @@ import ImgUtil
     
 class ImgViewer:
     
-    def __init__(self, w=4, h=4, rows=1, cols=1, title = "", svr=None, auto_save=False):
+    def __init__(self, w=4, h=4, rows=1, cols=1, title = "", svr=None,
+                 auto_save=False, disable_ticks=True):
         self.enabled = True
         self.img_obj_list = []
         self.w = w
@@ -57,8 +58,9 @@ class ImgViewer:
                 break
             plt.subplot(self.rows, self.cols, i + 1)
             L[ix].plot(_plt=plt)
-            plt.xticks([], [])
-            plt.yticks([], [])
+            #brk("booger")
+            plt.xticks(np.arange(0, L[ix].img_data.shape[1], step=10), [])
+            plt.yticks(np.arange(0, L[ix].img_data.shape[0], step=10), [])
         plt.show()
         
     def show(self, clear=False):

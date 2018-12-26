@@ -27,7 +27,7 @@ def view_stuff(X,y, vwr):
     vwr.show()
     vwr.flush()
 
-_vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
+_vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo",disable_ticks=False)
 
 ds = DataSet("data/driving_log.csv")
 

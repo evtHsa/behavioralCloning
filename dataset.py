@@ -9,8 +9,10 @@ from util import brk, _assert, oneShotMsg
 from csv_parser import CsvParser
 from random import randint
 from ImgViewer import ImgViewer
+import ImgUtil
 from sklearn.model_selection import train_test_split
 import numpy as np
+import cv2
 
 class DataSet:
     def __init__(self, csv_path):
@@ -53,11 +55,23 @@ class DataSet:
         # assume they're all the same size
         img = self._csv_parser.get_img(0)
         return img.img_data.shape
-    
+
+    def preprocess_img(self, img):
+        assert(type(img) == ImgUtil.Image)
+        # chop out the sky and car hood
+        img_data = img.img_data[30:96,:,:] # sort of a dull axe
+        # forcible resize to what nv model expects which is 66x200x3
+        img_data = cv2.resize(img_data,(200, 66), interpolation = cv2.INTER_AREA)
+        img.img_data = img_data
+        return img
+        
     def get_img(self, ix):
-        ret = self._csv_parser.get_img(ix)
-        oneShotMsg("img shape = " + str(ret.img_data.shape))
-        return ret
+        img = self._csv_parser.get_img(ix)
+        assert(type(img) == ImgUtil.Image)
+        oneShotMsg("img shape(from csv) = " + str(img.img_data.shape))
+        img = self.preprocess_img(img)
+        oneShotMsg("img shape(after processing) = " + str(img.img_data.shape))
+        return img
 
     def get_label(self, ix):
         return  self._csv_parser.get_label(ix)
