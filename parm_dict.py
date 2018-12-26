@@ -19,3 +19,4 @@ image_dir = "./data"
 # model hyperparms
 num_epochs = 1
 keras_verbosity = 2
+model_input_sz = {'rows': 66, 'cols' : 200}
