@@ -37,9 +37,7 @@ _vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
 ds = DataSet("data/driving_log.csv")
 
 # basic model stuff
-img_shape = ds.get_exemplar_img_size()
-print("img shape = ", str(img_shape))
-model = get_model(img_shape[0], img_shape[1])
+model = get_model(pd.model_input_sz['rows'], pd.model_input_sz['cols'])
 brk("check model")
 
 #checkpointing
@@ -54,7 +52,7 @@ try:
                                   nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
                                   callbacks=[checkpoint])
 except Exception as ex:
-    traceback_exception(ex)
+    #traceback_exception(ex)
     brk("bad ju-ju")
     
 print(model.summary())

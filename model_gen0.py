@@ -1,4 +1,5 @@
 
+from util import brk, _assert, oneShotMsg
 from keras.layers.core import Dense
 from keras.layers.pooling import MaxPooling2D
 from keras.models import Sequential, model_from_json
@@ -23,9 +24,11 @@ def get_model(nrows, ncols):
     model = Sequential()
     # keras no longer supports mode=2 for BN????
     model.add(BatchNormalization(epsilon=0.001, axis=1,
-                                 input_shape=(3, nrows,ncols)))
+                                 input_shape=(nrows,ncols, 3)))
+    brk("1 ringy dingy")
     model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu',
                             subsample=(2,2)))
+    brk("2 ringy dingy")
     model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu',
                             subsample=(2,2)))
     model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu',
@@ -42,5 +45,9 @@ def get_model(nrows, ncols):
     model.add(Dense(1, activation='tanh'))
     
     #adam optimizer and mean squared error loss fn
-    model.compile(optimizer=Adam(lr=1e-3), loss='mse')
+    print("BOOOOOOOOOOOOOOOOOOOOOOOGEEEEEEEEEEEEEEEEEEER")
+    try:
+        model.compile(optimizer=Adam(lr=1e-3), loss='mse')
+    except Exception:
+        pdb.post_mortem()
     return model
