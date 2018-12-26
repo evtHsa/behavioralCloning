@@ -91,6 +91,8 @@ class BatchGenerator:
     #https://stackoverflow.com/questions/42983569/how-to-write-a-generator-class
     def __init__(self, batch_size, set_slct, dataset):
         _assert((set_slct == 'train') or (set_slct == 'test'))
+        assert(batch_size > 0)
+        assert(type(dataset) == DataSet)
         self.batch_size = batch_size
         self.set_slct = set_slct
         self._dataset = dataset
