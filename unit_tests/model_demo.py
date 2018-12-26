@@ -38,7 +38,6 @@ ds = DataSet("data/driving_log.csv")
 
 # basic model stuff
 model = get_model(pd.model_input_sz['rows'], pd.model_input_sz['cols'])
-brk("check model")
 
 #checkpointing
 #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/ModelCheckpoint
