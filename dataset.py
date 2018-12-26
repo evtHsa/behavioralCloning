@@ -71,6 +71,9 @@ class DataSet:
         oneShotMsg("img shape(from csv) = " + str(img.img_data.shape))
         img = self.preprocess_img(img)
         oneShotMsg("img shape(after processing) = " + str(img.img_data.shape))
+        assert(img.img_data.shape == (pd.model_input_sz['rows'],
+                                        pd.model_input_sz['cols'],
+                                        3))
         return img
 
     def get_label(self, ix):
