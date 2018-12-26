@@ -83,6 +83,7 @@ class BatchGenerator:
         return self
     
     def __next__(self):
+        # returns tuple(<array of ImgUtil.Image>, <steering angle>)
         while True:
             print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct,
                                                        self.batch_start, self.batch_size))
