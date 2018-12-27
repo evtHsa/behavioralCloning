@@ -81,7 +81,6 @@ class DataSet:
 
     def split_train_test(self):
         ixes = range(self._csv_parser.size())
-        ixes = ixes[1:10]
         #the X and y indices are the same since both come from the same rec
         self.ixes['train'], self.ixes['test'], _, _ = \
                 train_test_split(ixes, ixes, test_size = pd.test_set_fraction,
@@ -104,15 +103,19 @@ class BatchGenerator:
     def __next__(self):
         # returns tuple(<array of ImgUtil.Image>, <steering angle>)
         while True:
-            print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct,
-                                                       self.batch_start, self.batch_size))
+            #print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct, self.batch_start, self.batch_size))
             X = []
             y = []
             for ix in self._dataset.ix_range(self.set_slct, self.batch_start,
                                              self.batch_size):
-                X.append(self._dataset.get_img(ix))
+                out_img = self._dataset.get_img(ix).img_data
+                X.append(out_img)
+                oneShotMsg("WARNING: __next__ client sees " + str(type(out_img)))
+                assert(type(out_img) == np.ndarray)
                 y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
+            if (len(X) == 0):
+                raise StopIteration
             return np.array(X), np.array(y)
 
     def num_samples(self):

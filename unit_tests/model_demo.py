@@ -51,9 +51,7 @@ try:
                                   nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
                                   callbacks=[checkpoint])
 except Exception as ex:
-    #traceback_exception(ex)
     print(ex)
-    pdb.post_mortem()
+    #pdb.post_mortem()
     
 print(model.summary())
-brk("wasn'''t that speshul")
