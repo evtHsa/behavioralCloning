@@ -77,6 +77,8 @@ class Image:
 # signature has changed from the version used with lane finding
 def cv2CvtColor(img_obj, to_type, vwr=None):
      assert(type(img_obj) is Image)
+     if img_obj.img_type == to_type: # no conversion
+          return img_obj 
      color = get_color_conversion_constant(img_obj.img_type, to_type)
 
      ret = Image(img_data = cv2.cvtColor(img_obj.img_data, color),
