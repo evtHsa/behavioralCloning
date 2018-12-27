@@ -113,8 +113,7 @@ class BatchGenerator:
                 X.append(self._dataset.get_img(ix))
                 y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
-            ret = (np.array(X), np.array(y))
-            return ret
+            return np.array(X), np.array(y)
 
     def num_samples(self):
         return self._dataset.set_size(self.set_slct)
