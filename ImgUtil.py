@@ -1,4 +1,5 @@
 #  adapted from advanced lane finding project
+# much of the buggy type enforcment is gone
 
 # functions in this file should be only those that operate on images and/or
 # return images
@@ -13,55 +14,29 @@ import os
 import util as ut
 import parm_dict as pd
 import copy
+from util import brk
 
 type_2_cmap = {
      'gray': 'Greys_r',
-     'rgb' :  None,
-     'bgr' : None
+     'rgb' : None,
+     'bgr' : None,
+     'yuv' : None
 }
 
-color_2_src_type = {
-     str(cv2.COLOR_RGB2BGR) : 'rgb',
-     str(cv2.COLOR_BGR2RGB) : 'bgr',
-     str(cv2.COLOR_RGB2GRAY) : 'rgb',
-     str(cv2.COLOR_BGR2GRAY) : 'bgr',
-     str(cv2.COLOR_BGR2GRAY) : 'bgr',
-     str(cv2.COLOR_RGB2HLS)   : 'rgb',
-     str(cv2.COLOR_BGR2HLS)   : 'bgr',
-     str(cv2.COLOR_BGR2HSV)   : 'bgr',
-     str(cv2.COLOR_RGB2Lab)   : 'rgb',
-     str(cv2.COLOR_BGR2Lab)    : 'bgr',
-     str(cv2.COLOR_RGB2Luv)    : 'rgb',
-     str(cv2.COLOR_BGR2Luv)    : 'bgr'
+color_conversion_dict = {
+     'rgb' : {
+          'bgr' : cv2.COLOR_RGB2BGR, 'gray' : cv2.COLOR_RGB2GRAY,
+          'hls' : cv2.COLOR_RGB2HLS, 'lab' : cv2.COLOR_RGB2Lab,
+          'luv' : cv2.COLOR_RGB2Luv, 'yuv' : cv2.COLOR_RGB2YUV},
+     'bgr' : {
+          'rbg' : cv2.COLOR_BGR2RGB, 'gray' : cv2.COLOR_BGR2GRAY,
+          'hls' : cv2.COLOR_BGR2HLS, 'lab' : cv2.COLOR_BGR2Lab,
+          'luv' : cv2.COLOR_BGR2Luv, 'yuv' : cv2.COLOR_BGR2YUV},
+     'yuv' : { 'rgb' : cv2.COLOR_YUV2RGB, 'bgr' : cv2.COLOR_YUV2BGR}
 }
 
-colorConversion2DestTypeDict = { # FIXME: this is misguided, misleading, and bad
-     str(cv2.COLOR_BGR2RGB) : 'rgb',
-     str(cv2.COLOR_RGB2BGR) : 'bgr',
-     str(cv2.COLOR_RGB2GRAY) : 'gray',
-     str(cv2.COLOR_BGR2GRAY) : 'gray',
-     str(cv2.COLOR_RGB2HLS)   : 'gray',
-     str(cv2.COLOR_BGR2HLS)   : 'gray',
-     str(cv2.COLOR_BGR2HSV)   : 'gray',
-     str(cv2.COLOR_RGB2Lab) : 'gray',
-     str(cv2.COLOR_BGR2Lab) : 'gray',
-     str(cv2.COLOR_RGB2Luv) : 'gray',
-     str(cv2.COLOR_BGR2Luv) : 'gray'
-}
-
-colorConversion2DestColorName = {
-     str(cv2.COLOR_RGB2BGR) : 'bgr',
-     str(cv2.COLOR_BGR2RGB) : 'rgb',
-     str(cv2.COLOR_RGB2GRAY) : 'gray',
-     str(cv2.COLOR_BGR2GRAY) : 'gray',
-     str(cv2.COLOR_RGB2HLS)   : 'hls',
-     str(cv2.COLOR_BGR2HLS)   : 'hls',
-     str(cv2.COLOR_BGR2HSV)   : 'hsv',
-     str(cv2.COLOR_RGB2Lab)   : 'lab',
-     str(cv2.COLOR_BGR2Lab)   : 'lab',
-     str(cv2.COLOR_RGB2Luv)   : 'luv',
-     str(cv2.COLOR_BGR2Luv)   : 'luv'
-}
+def get_color_conversion_constant(from_type, to_type):
+     return color_conversion_dict[from_type][to_type]
 
 class Image:
      def __init__(self, img_data=None, title="", img_type='bgr'):
@@ -92,28 +67,21 @@ class Image:
                     
      def plot(self, _plt):
           #self.show()
-          rgb = self.img_data
-          if self.img_type == 'bgr':
-               rgb = cv2.cvtColor(self.img_data, cv2.COLOR_BGR2RGB)
-          if len(rgb.shape) == 1:
-               _plt.plot(rgb) # histogram or other 1D thing
+          tmp = cv2CvtColor(self, 'rgb')
+          if len(tmp.img_data.shape) == 1:
+               _plt.plot(tmp.img_data) # histogram or other 1D thing
           else:
-               _plt.imshow(rgb, cmap=self.cmap)
+               _plt.imshow(tmp.img_data, cmap=self.cmap)
           _plt.xlabel(self.title)
-          
-     def legalColorConversion(self, color):
-          # FIXME: just say yes until we have better fix for the fact that
-          # cv2.COLOR_RGB2BGR == cv2.COLOR_BGR2RGB
-          #return self.img_type == color_2_src_type[str(color)]
-          return True
-     
-def cv2CvtColor(img_obj, color, vwr=None):
+
+# signature has changed from the version used with lane finding
+def cv2CvtColor(img_obj, to_type, vwr=None):
      assert(type(img_obj) is Image)
-     ut._assert(img_obj.legalColorConversion(color))
+     color = get_color_conversion_constant(img_obj.img_type, to_type)
 
      ret = Image(img_data = cv2.cvtColor(img_obj.img_data, color),
                  title = "cvtColor: " + str(color),
-                 img_type=getColorConversionDestType(color))
+                 img_type=to_type)
      return ret
 
 def img_rgb2gray(img, vwr=None):
@@ -137,10 +105,6 @@ def imRead(path, flags = None, reader=None, vwr=None):
      else:
           img_obj = Image(img_data = mpimg.imread(path), title = title, img_type = 'rgb')
      return img_obj
-
-def getColorConversionDestType(color):
-     return colorConversion2DestTypeDict[str(color)]
-
 
 def copy_image(in_img):
      assert(type(in_img) is Image)

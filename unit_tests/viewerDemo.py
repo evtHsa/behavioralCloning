@@ -18,6 +18,8 @@ import pdb
 import ImgViewer as iv
 import ImgUtil as iu
 import pdb
+from util import brk
+import cv2
 
 #gViewer = iv.ImgViewer()
 gViewer = iv.ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
@@ -25,6 +27,7 @@ gViewer = iv.ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
 for i in range(1, 11):
     fname = "old_test_images/test"+str(i)+".jpg"
     img = iu.imRead(fname, reader="cv2")
+    img = iu.cv2CvtColor(img, 'yuv')
     pdb.set_trace
     gViewer.push(img, fname)
 
