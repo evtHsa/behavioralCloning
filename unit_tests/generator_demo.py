@@ -31,7 +31,8 @@ for i in range(10):
     for i in range(len(X_lst)):
         X_ndarray = X_lst[i]
         assert(type(X_ndarray) == np.ndarray)
-        X_img = Image(X_ndarray, title = "(" + str(y_lst[i]) + ")")
+        X_img = Image(X_ndarray, title = "(" + str(y_lst[i]) + ")",
+                      img_type='yuv') #see assert in get_img() this  is what get_img emits
         ds._img_viewer.push(X_img)
     ds._img_viewer.show()
     ds._img_viewer.flush()

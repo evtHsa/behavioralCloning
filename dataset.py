@@ -63,6 +63,8 @@ class DataSet:
         # forcible resize to what nv model expects which is 66x200x3
         img_data = cv2.resize(img_data,(200, 66), interpolation = cv2.INTER_AREA)
         img.img_data = img_data
+        # per "End to End Learning for Self-Driving Cars", convert to YUV
+        img = ImgUtil.cv2CvtColor(img, 'yuv')
         return img
         
     def get_img(self, ix):
@@ -74,6 +76,7 @@ class DataSet:
         assert(img.img_data.shape == (pd.model_input_sz['rows'],
                                         pd.model_input_sz['cols'],
                                         3))
+        assert(img.img_type == 'yuv')
         return img
 
     def get_label(self, ix):
