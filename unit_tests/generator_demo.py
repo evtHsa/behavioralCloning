@@ -17,6 +17,7 @@ import pdb
 # support code
 
 from ImgViewer import ImgViewer
+from ImgUtil import Image
 from dataset import DataSet
 from dataset import BatchGenerator
 from util import brk
@@ -28,7 +29,9 @@ for i in range(10):
     #for (X, y) in next(gen):
     X_lst, y_lst = next(ds.gen_train)
     for i in range(len(X_lst)):
-        X_lst[i].title += "__label(" + str(y_lst[i]) + ")"
-        ds._img_viewer.push(X_lst[i])
-        ds._img_viewer.show()
-        ds._img_viewer.flush()
+        X_ndarray = X_lst[i]
+        assert(type(X_ndarray) == np.ndarray)
+        X_img = Image(X_ndarray, title = "(" + str(y_lst[i]) + ")")
+        ds._img_viewer.push(X_img)
+    ds._img_viewer.show()
+    ds._img_viewer.flush()
