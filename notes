@@ -1,4 +1,39 @@
 ;-*- mode: outline -*-
+* how to invoke pdb on exception
+try:
+    history = model.fit_generator(ds.gen_train, validation_data=ds.gen_valid,
+                                  nb_val_samples=ds.gen_valid.num_samples(), 
+                                  samples_per_epoch=ds.gen_valid.samples_per_epoch(),
+                                  nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
+                                  callbacks=[checkpoint])
+except Exception as ex:
+    #traceback_exception(ex)
+    print(ex)
+    pdb.post_mortem()
+* oddities & balderdash
+** generator woe
+*** images from csv: 21774 = 64 * 340.21875
+*** test set fraction = .25 -> train = 75%, => 16330 train set imgs => 255.2 train batches
+*** yep, the gavno hits the fan after batch 255
+*** tail of output
+250: len(X) = 64, len(y) = 64
+251: len(X) = 64, len(y) = 64
+252: len(X) = 64, len(y) = 64
+253: len(X) = 64, len(y) = 64
+254: len(X) = 64, len(y) = 64
+255: len(X) = 10, len(y) = 10
+256: len(X) = 0, len(y) = 0
+257: len(X) = 0, len(y) = 0
+258: len(X) = 0, len(y) = 0
+259: len(X) = 0, len(y) = 0
+260: len(X) = 0, len(y) = 0
+261: len(X) = 0, len(y) = 0
+262: len(X) = 0, len(y) = 0
+263: len(X) = 0, len(y) = 0
+264: len(X) = 0, len(y) = 0
+265: len(X) = 0, len(y) = 0
+Error when checking input: expected batch_normalization_1_input to have 4 dimensions, but got array with shape (0, 1)
+> /home/evt/anaconda3/envs/carnd-term1/lib/python3.5/site-packages/keras/engine/training.py(142)_standardize_input_data()
 * keras
 ** bn issues
    https://github.com/keras-team/keras/issues/2827
