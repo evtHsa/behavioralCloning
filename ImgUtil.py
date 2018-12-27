@@ -29,7 +29,7 @@ color_conversion_dict = {
           'hls' : cv2.COLOR_RGB2HLS, 'lab' : cv2.COLOR_RGB2Lab,
           'luv' : cv2.COLOR_RGB2Luv, 'yuv' : cv2.COLOR_RGB2YUV},
      'bgr' : {
-          'rbg' : cv2.COLOR_BGR2RGB, 'gray' : cv2.COLOR_BGR2GRAY,
+          'rgb' : cv2.COLOR_BGR2RGB, 'gray' : cv2.COLOR_BGR2GRAY,
           'hls' : cv2.COLOR_BGR2HLS, 'lab' : cv2.COLOR_BGR2Lab,
           'luv' : cv2.COLOR_BGR2Luv, 'yuv' : cv2.COLOR_BGR2YUV},
      'yuv' : { 'rgb' : cv2.COLOR_YUV2RGB, 'bgr' : cv2.COLOR_YUV2BGR}
