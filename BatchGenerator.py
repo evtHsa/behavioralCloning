@@ -44,7 +44,6 @@ class BatchGenerator:
                 
     def samples_per_epoch(self):
         ret = self.num_samples()  // self.batch_size #warning floor division
-        brk("boy howdy")
         return ret
 
         
