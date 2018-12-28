@@ -18,8 +18,7 @@ import pdb
 
 from ImgViewer import ImgViewer
 from ImgUtil import Image
-from dataset import DataSet
-from dataset import BatchGenerator
+from DataSet import DataSet
 from util import brk
 import numpy as np
 
