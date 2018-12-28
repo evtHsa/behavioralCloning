@@ -1,4 +1,8 @@
 ;-*- mode: outline -*-
+* crude timings
+** 21774 * .75 = 16330 training imgs, batch size = 64
+   - 1 epoch: 0:03:02
+   - 2 epoch: 0:06:55
 * how to invoke pdb on exception
 try:
     history = model.fit_generator(ds.gen_train, validation_data=ds.gen_valid,
