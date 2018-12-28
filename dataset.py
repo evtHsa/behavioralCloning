@@ -79,6 +79,25 @@ class DataSet:
         assert(img.img_type == 'yuv')
         return img
 
+    def synthesize_img(self, ix):
+        img = self.get_img(ix) # img_data already has pre-processing
+        # mess with the brightness
+        delta = pd.yuv_max_brightness_boost
+        img = img.adjust_yuv_brightness(np.random.randint(-1 * delta, delta))
+        assert(img.img_type == 'yuv')
+        return img
+        
+    def get_synthetic_image_batch(self, batch_size):
+        # only get imgs from training set(dont want 2look@ test data)
+        # shuffle the indices
+        self.ixes['train'] = shuffle(self.ixes['train'])
+        # slice off a batch full
+        _ixes = self.ixes['train'][0:batch_size]
+        # get the images & labels
+        imgs = [self.synthesize_img(ix) for ix in _ixes]
+        labels = [self.get_label(ix) for ix in _ixes]
+        return np.array(imgs), np.array(labels)
+
     def get_label(self, ix):
         return  self._csv_parser.get_label(ix)
 

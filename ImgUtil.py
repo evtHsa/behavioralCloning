@@ -74,6 +74,20 @@ class Image:
                _plt.imshow(tmp.img_data, cmap=self.cmap)
           _plt.xlabel(self.title)
 
+     def adjust_yuv_brightness(self, adjustment):
+          # docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.astype.html
+          # docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.where.html
+          assert(self.img_type == 'yuv')
+          print("adjust_yuv_brightness ", adjustment)
+          if adjustment == 0:
+               return self
+          if adjustment > 0:
+               mask = (self.img_data[:,:,0] + adjustment) > 255
+          if adjustment < 0:
+               mask = (self.img_data[:,:,0] - adjustment) < 0
+          self.img_data[:,:,0] = self.img_data[:,:,0] + np.where(mask, 0, adjustment)
+          return self
+
 # signature has changed from the version used with lane finding
 def cv2CvtColor(img_obj, to_type, vwr=None):
      assert(type(img_obj) is Image)

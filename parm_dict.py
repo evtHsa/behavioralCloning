@@ -15,7 +15,7 @@ train_batch_size = 64
 valid_batch_size = 64
 test_batch_size = 64
 image_dir = "./data"
-
+yuv_max_brightness_boost = 24
 # model hyperparms
 num_epochs = 1
 keras_verbosity = 2
