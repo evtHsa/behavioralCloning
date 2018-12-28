@@ -19,11 +19,10 @@ from sklearn.utils import shuffle
 class DataSet:
     def __init__(self, csv_path):
         self._csv_parser = CsvParser(csv_path)
-        self._img_viewer = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
+        self._img_viewer = ImgViewer(w=8, h=8, rows=8, cols=8, title="demo")
         self.ixes = { 'train' : None, 'test' : None }
         self.split_train_test()
         self.gen_train = BatchGenerator(pd.train_batch_size, 'train', self)
-        self.gen_valid = BatchGenerator(pd.train_batch_size, 'train', self)
         self.gen_test = BatchGenerator(pd.test_batch_size, 'test', self)
 
     def size(self):
