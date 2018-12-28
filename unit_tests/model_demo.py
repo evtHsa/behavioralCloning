@@ -45,13 +45,15 @@ checkpoint = ModelCheckpoint('model{epoch:02d}.h5')
 
 #https://keras.io/models/sequential/
 try:
-    history = model.fit_generator(ds.gen_train, validation_data=ds.gen_valid,
-                                  nb_val_samples=ds.gen_valid.num_samples(), 
-                                  samples_per_epoch=ds.gen_valid.samples_per_epoch(),
-                                  nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
-                                  callbacks=[checkpoint])
+    history = model.fit_generator(
+        ds.gen_train,
+        validation_data=ds.gen_valid,
+        nb_val_samples=ds.gen_valid.num_samples(), 
+        samples_per_epoch=ds.gen_valid.samples_per_epoch(),
+        nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
+        callbacks=[checkpoint])
 except Exception as ex:
     print(ex)
-    #pdb.post_mortem()
+    pdb.post_mortem()
     
 print(model.summary())
