@@ -9,10 +9,12 @@ from util import brk, _assert, oneShotMsg
 from csv_parser import CsvParser
 from random import randint
 from ImgViewer import ImgViewer
-import ImgUtil
+import ImgUtil as iu
 from sklearn.model_selection import train_test_split
 import numpy as np
 import cv2
+#https://scikit-learn.org/stable/modules/generated/sklearn.utils.shuffle.html
+from sklearn.utils import shuffle
 
 class DataSet:
     def __init__(self, csv_path):
@@ -57,19 +59,19 @@ class DataSet:
         return img.img_data.shape
 
     def preprocess_img(self, img):
-        assert(type(img) == ImgUtil.Image)
+        assert(type(img) == iu.Image)
         # chop out the sky and car hood
         img_data = img.img_data[30:96,:,:] # sort of a dull axe
         # forcible resize to what nv model expects which is 66x200x3
         img_data = cv2.resize(img_data,(200, 66), interpolation = cv2.INTER_AREA)
         img.img_data = img_data
         # per "End to End Learning for Self-Driving Cars", convert to YUV
-        img = ImgUtil.cv2CvtColor(img, 'yuv')
+        img = iu.cv2CvtColor(img, 'yuv')
         return img
         
     def get_img(self, ix):
         img = self._csv_parser.get_img(ix)
-        assert(type(img) == ImgUtil.Image)
+        assert(type(img) == iu.Image)
         oneShotMsg("img shape(from csv) = " + str(img.img_data.shape))
         img = self.preprocess_img(img)
         oneShotMsg("img shape(after processing) = " + str(img.img_data.shape))
@@ -123,7 +125,7 @@ class BatchGenerator:
         return self
     
     def __next__(self):
-        # returns tuple(<array of ImgUtil.Image>, <steering angle>)
+        # returns tuple(<array of iu.Image>, <steering angle>)
         while True:
             #print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct, self.batch_start, self.batch_size))
             X = []
