@@ -102,8 +102,14 @@ class DataSet:
     def get_label(self, ix):
         return  self._csv_parser.get_label(ix)
 
+    def size(self):
+        ret = self._csv_parser.size()
+        ret = 256
+        oneShotMsg("========\nWARNING: restricting to 72 records\n========")
+        return ret
+
     def split_train_test(self):
-        ixes = range(self._csv_parser.size())
+        ixes = range(self.size())
         #the X and y indices are the same since both come from the same rec
         self.ixes['train'], self.ixes['test'], _, _ = \
                 train_test_split(ixes, ixes, test_size = pd.test_set_fraction,
