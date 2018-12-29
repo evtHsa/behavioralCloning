@@ -19,6 +19,7 @@ yuv_max_brightness_boost = 24
 # model hyperparms
 num_epochs = 4
 keras_verbosity = 2
-model_input_sz = {'rows': 66, 'cols' : 200}
+model_input_sz  = {'rows': 66, 'cols' : 200}
 FIXME_RECORD_LIMITER = 0 # make it non zero to restrict size of data we use
 batch__next__debug = False
+unit_test_generator_show_imgs = True
