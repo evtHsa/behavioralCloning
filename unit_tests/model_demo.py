@@ -49,7 +49,7 @@ try:
         ds.gen_train,
         validation_data=ds.gen_valid,
         nb_val_samples=ds.gen_valid.num_samples(), 
-        samples_per_epoch=ds.gen_valid.samples_per_epoch(),
+        steps_per_epoch=ds.gen_valid.steps_per_epoch(),
         nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
         callbacks=[checkpoint])
 except Exception as ex:

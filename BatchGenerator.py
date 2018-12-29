@@ -42,7 +42,7 @@ class BatchGenerator:
     def num_samples(self):
         return self._dataset.set_size(self.set_slct)
                 
-    def samples_per_epoch(self):
+    def steps_per_epoch(self):
         ret = self.num_samples()  // self.batch_size #warning floor division
         return ret
 
