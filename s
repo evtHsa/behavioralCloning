@@ -1,1 +1,1 @@
-unit_tests/synthetic_demo.py
+unit_tests/synthetic.py
