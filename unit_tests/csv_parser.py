@@ -13,7 +13,7 @@ sys.path.append("..")
 import pdb
 
 # support code
-from csv_parser import CsvParser
+from CsvParser import CsvParser
 
 csv_parser = CsvParser("data/driving_log.csv")
 image_recs = csv_parser.get_image_recs()

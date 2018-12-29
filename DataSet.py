@@ -5,7 +5,7 @@ import csv
 import parm_dict as pd
 
 from util import brk, _assert, oneShotMsg
-from csv_parser import CsvParser
+from CsvParser import CsvParser
 from random import randint
 from ImgViewer import ImgViewer
 import ImgUtil as iu
