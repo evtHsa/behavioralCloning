@@ -104,8 +104,9 @@ class DataSet:
 
     def size(self):
         ret = self._csv_parser.size()
-        ret = 256
-        oneShotMsg("========\nWARNING: restricting to 72 records\n========")
+        ret = pd.FIXME_RECORD_LIMITER
+        oneShotMsg("========\nWARNING: restricting to %d records\n========"
+                   % ret)
         return ret
 
     def split_train_test(self):

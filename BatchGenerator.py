@@ -15,8 +15,8 @@ class BatchGenerator:
         self.batch_start = 0
         print("BatchGenerator(%d, %s) " % (batch_size, set_slct))
         print("\tnum samples = ", self.num_samples())
-        print("\tsamples per epoch = ", self.samples_per_epoch())
-        assert(self.samples_per_epoch() > 0)
+        print("\tsteps per epoch = ", self.steps_per_epoch())
+        assert(self.steps_per_epoch() > 0)
 
     def __iter__(self):
         return self
