@@ -24,7 +24,9 @@ class BatchGenerator:
     def __next__(self):
         # returns tuple(<array of iu.Image>, <steering angle>)
         while True:
-            print("BatchGenerator(%s): ix = %d, bs = %d" % (self.set_slct, self.batch_start, self.batch_size))
+            if pd.batch__next__debug:
+                print("BatchGenerator(%s): ix = %d, bs = %d" % (
+                    self.set_slct, self.batch_start, self.batch_size))
             X = []
             y = []
             for ix in self._dataset.ix_range(self.set_slct, self.batch_start,
