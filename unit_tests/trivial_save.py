@@ -17,7 +17,6 @@ from model_gen0 import get_model
 from keras.callbacks import ModelCheckpoint, Callback
 
 import parm_dict as pd
-pd.FIXME_RECORD_LIMITER = 138
 from util import brk
 
 ds = DataSet("data/driving_log.csv")
