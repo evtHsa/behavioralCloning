@@ -38,7 +38,8 @@ class BatchGenerator:
                 y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
             if (len(X) == 0):
-                raise StopIteration
+                self.batch_start = 0
+                break
             return np.array(X), np.array(y)
 
     def num_samples(self):

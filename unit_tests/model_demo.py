@@ -15,8 +15,8 @@ import pdb
 # support code
 
 from ImgViewer import ImgViewer
-from dataset import DataSet
-from dataset import BatchGenerator #fixme: probalby should not be exposed?
+from DataSet import DataSet
+from DataSet import BatchGenerator #fixme: probalby should not be exposed?
 from util import brk
 from util import traceback_exception
 import numpy as np
@@ -47,10 +47,9 @@ checkpoint = ModelCheckpoint('model{epoch:02d}.h5')
 try:
     history = model.fit_generator(
         ds.gen_train,
-        validation_data=ds.gen_valid,
-        nb_val_samples=ds.gen_valid.num_samples(), 
-        steps_per_epoch=ds.gen_valid.steps_per_epoch(),
-        nb_epoch=pd.num_epochs, verbose=pd.keras_verbosity,
+        steps_per_epoch=ds.gen_train.steps_per_epoch(),
+        epochs=pd.num_epochs, 
+        verbose=pd.keras_verbosity,
         callbacks=[checkpoint])
 except Exception as ex:
     print(ex)

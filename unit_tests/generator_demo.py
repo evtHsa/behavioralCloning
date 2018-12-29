@@ -24,8 +24,10 @@ import numpy as np
 
 ds = DataSet("data/driving_log.csv")
 
-for i in range(10):
-    #for (X, y) in next(gen):
+cnt = 0
+for i in range(ds.gen_train.steps_per_epoch()):
+    cnt += 1
+    print("epoch #%d" % cnt)
     X_lst, y_lst = next(ds.gen_train)
     for i in range(len(X_lst)):
         X_ndarray = X_lst[i]
