@@ -78,7 +78,8 @@ class Image:
           # docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.astype.html
           # docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.where.html
           assert(self.img_type == 'yuv')
-          print("adjust_yuv_brightness ", adjustment)
+          if pd.synthetic_debug:
+               print("adjust_yuv_brightness ", adjustment)
           if adjustment == 0:
                return self
           if adjustment > 0:
