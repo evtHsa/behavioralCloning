@@ -17,7 +17,7 @@ test_batch_size = 64
 image_dir = "./data"
 yuv_max_brightness_boost = 24
 # model hyperparms
-num_epochs = 4
+num_epochs = 5
 keras_verbosity = 2
 model_input_sz  = {'rows': 66, 'cols' : 200}
 FIXME_RECORD_LIMITER = 0 # make it non zero to restrict size of data we use
