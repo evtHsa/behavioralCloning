@@ -47,7 +47,16 @@ controller = SimplePIController(0.1, 0.002)
 set_speed = 9
 controller.set_desired(set_speed)
 
-
+def preprocess_rgb_img(img):
+    #adapted from our DataSet.py DataSet::preprocess_img
+    # chop out the sky and car hood
+    img = img[30:96,:,:] # sort of a dull axe
+    # forcible resize to what nv model expects which is 66x200x3
+    img = cv2.resize(img,(200, 66), interpolation = cv2.INTER_AREA)
+    # simulator images are rgb and DataSet deals with BGR
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
+    return img
+    
 @sio.on('telemetry')
 def telemetry(sid, data):
     if data:
@@ -61,7 +70,8 @@ def telemetry(sid, data):
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        img = preprocess_rgb_img(image_array)
+        steering_angle = float(model.predict(img[None, :, :, :], batch_size=1))
 
         throttle = controller.update(float(speed))
 
