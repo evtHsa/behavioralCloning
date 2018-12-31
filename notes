@@ -60,6 +60,8 @@ Error when checking input: expected batch_normalization_1_input to have 4 dimens
 ** csv fields
    center,left,right,steering,throttle,brake,speed
 * where things were found
+** simulator
+   https://github.com/udacity/self-driving-car-sim
 ** starter nv model
    https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
 ** train_test_split
