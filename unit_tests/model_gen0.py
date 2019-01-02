@@ -1,5 +1,4 @@
 
-from util import brk, _assert, oneShotMsg
 from keras.layers.core import Dense
 from keras.layers.pooling import MaxPooling2D
 from keras.models import Sequential, model_from_json
