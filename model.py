@@ -3,12 +3,6 @@
 
 import sys
 
-# unit tests are usually run from their own dir or parent dir
-# unit tests care only of standard stuff and parent dir
-sys.path.append(".") 
-sys.path.append("unit_tests")  #FIXME: marked for doom
-
-
 # support code
 import pdb
 import csv
@@ -20,7 +14,6 @@ import copy
 # the creeping marker of impending monoliticizaton <<<<<<<<<<<<<<<<<<
 from keras.callbacks import ModelCheckpoint, Callback
 from sklearn.model_selection import train_test_split
-import parm_dict as pd #FIXME: this just go away
 import keras
 from keras.layers.core import Dense
 from keras.layers.pooling import MaxPooling2D
@@ -110,7 +103,8 @@ class CsvParser:
             
     def eliminate_very_slow_data(self):
         # preserves image_recs that are not implausibly slow
-        self.image_recs =[ image_rec for image_rec in self.image_recs if image_rec['throttle'] >= pd.too_slow ]
+        self.image_recs =[ image_rec for image_rec in self.image_recs
+                           if image_rec['throttle'] >= _too_slow ]
         print("\teliminate_very_slow_data => %d image_recs" % len(self.image_recs))
 
     def correct_side_cam_steering_angles(self):
@@ -119,9 +113,9 @@ class CsvParser:
         print("\tcorrect_side_cam_steering_angles")
         for image_rec in self.image_recs:
             if image_rec['cam'] == 'left':
-                image_rec['steering'] += pd.side_cam_angle_correction
+                image_rec['steering'] += _side_cam_angle_correction
             elif  image_rec['cam'] == 'right':
-                image_rec['steering'] -= pd.side_cam_angle_correction
+                image_rec['steering'] -= _side_cam_angle_correction
             
     def condition_data(self):
         print("condition_data")
@@ -138,7 +132,7 @@ class CsvParser:
         return self.image_recs[ix]
 
     def img_path(self, rel_path):
-        return pd.image_dir + '/' + rel_path
+        return _image_dir + '/' + rel_path
 
     def get_img(self,ix):
         rec = self.get_rec(ix)
@@ -218,7 +212,7 @@ class Image:
           # docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.astype.html
           # docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.where.html
           assert(self.img_type == 'yuv')
-          if pd.synthetic_debug:
+          if _synthetic_debug:
                print("adjust_yuv_brightness ", adjustment)
           if adjustment == 0:
                return self
@@ -596,5 +590,5 @@ try:
 except Exception as ex:
     print(ex)
     pdb.post_mortem()
-    
+model.save('model.h5')    
 print(model.summary())
