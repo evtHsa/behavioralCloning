@@ -1,5 +1,0 @@
-#!/bin/bash
-python csv_parser_demo.py
-python generator_demo.py
-python model_demo.py
-python model_demo.py
