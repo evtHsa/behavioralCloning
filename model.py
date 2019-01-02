@@ -14,7 +14,6 @@ import pdb
 
 # support code
 
-from ImgViewer import ImgViewer
 from DataSet import DataSet
 from DataSet import BatchGenerator #fixme: probalby should not be exposed?
 from util import brk
@@ -31,8 +30,6 @@ def view_stuff(X,y, vwr):
         vwr.push(X[i], str(y[i]))
     vwr.show()
     vwr.flush()
-
-_vwr = ImgViewer(w=4, h=4, rows=2, cols=2, title="demo")
 
 ds = DataSet("data/driving_log.csv")
 
