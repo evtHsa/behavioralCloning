@@ -18,11 +18,23 @@ import numpy as np
 import copy
 
 # the creeping marker of impending monoliticizaton <<<<<<<<<<<<<<<<<<
-import numpy as np
-from model_gen0 import get_model
 from keras.callbacks import ModelCheckpoint, Callback
 from sklearn.model_selection import train_test_split
 import parm_dict as pd #FIXME: this just go away
+import keras
+from keras.layers.core import Dense
+from keras.layers.pooling import MaxPooling2D
+from keras.models import Sequential, model_from_json
+import keras.models as models
+from keras.models import Sequential, Model
+from keras.layers.core import Dense,  Activation, Flatten
+from keras.layers import BatchNormalization, Input
+#from keras.layers.core import Dropout, Reshape
+from keras.layers.convolutional import Convolution2D
+from keras.optimizers import Adam
+#from keras.optimizers import SGD,  RMSprop 
+
+import sklearn.metrics as metrics
 
 #################################################
 # constants & hyperparms
@@ -40,7 +52,7 @@ _test_batch_size = 64
 _image_dir = "./data"
 _yuv_max_brightness_boost = 24
 # model hyperparms
-_num_epochs = 1
+_num_epochs = 5
 _keras_verbosity = 2
 _model_input_sz  = {'rows': 66, 'cols' : 200}
 _FIXME_RECORD_LIMITER = 0 # make it non zero to restrict size of data we use
@@ -415,7 +427,6 @@ class BatchGenerator:
                                              self.batch_size):
                 out_img = self._dataset.get_img(ix).img_data
                 X.append(out_img)
-                oneShotMsg("WARNING: __next__ client sees " + str(type(out_img)))
                 assert(type(out_img) == np.ndarray)
                 y.append(self._dataset.get_label(ix))
             self.batch_start += self.batch_size
@@ -532,14 +543,43 @@ class DataSet:
                 train_test_split(ixes, ixes, test_size = _test_set_fraction,
                                  random_state = _train_test__random_state)
 
-#######################################################
+#####################################################
+# model: please see writeup_report.md for detail
+#####################################################
+model = Sequential()
+# keras no longer supports mode=2 for BN????
+model.add(BatchNormalization(epsilon=0.001, axis=1,
+                             input_shape=(_model_input_sz['rows'],
+                                          _model_input_sz['cols'],
+                                          3)))
+model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu',
+                        subsample=(2,2)))
+model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu',
+                        subsample=(2,2)))
+model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu',
+                        subsample=(2,2)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu',
+                        subsample=(1,1)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu',
+                            subsample=(1,1)))
+model.add(Flatten())
+model.add(Dense(1164, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(50, activation='relu'))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='tanh'))
+
+#adam optimizer and mean squared error loss fn
+try:
+        model.compile(optimizer=Adam(lr=1e-3), loss='mse')
+except Exception:
+        pdb.post_mortem()
+
+#####################################################
 # begin - main script                                                                                                       #
-#######################################################
+#####################################################
 
 ds = DataSet("data/driving_log.csv")
-
-# basic model stuff
-model = get_model(_model_input_sz['rows'], _model_input_sz['cols'])
 
 #checkpointing
 #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/ModelCheckpoint
