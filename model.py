@@ -40,10 +40,10 @@ _test_set_fraction = 0.2
 _train_test__random_state = 42
 _train_batch_size = 64
 _valid_batch_size = 64
-#FIXME: delete any of these constants that are unreferenced after all code subsumed
 _test_batch_size = 64
 _image_dir = "./data"
 _yuv_max_brightness_boost = 24
+
 # model hyperparms
 _num_epochs = 5
 _keras_verbosity = 2
@@ -192,7 +192,7 @@ class Image:
      def putText(self):
           # https://stackoverflow.com/questions/37191008/load-truetype-font-to-opencv
           # questions/16615662/how-to-write-text-on-a-image-in-windows-using-python-opencv2
-          r, g, b = (255, 255, 255) # FIXME: what if img is rbg, enforcement??
+          r, g, b = (255, 255, 255)
           font=cv2.FONT_HERSHEY_DUPLEX #why are hershey the only fonts in opencv
           y = 50
           for msg in self.msgs:
