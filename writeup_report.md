@@ -1,4 +1,4 @@
-﻿g
+﻿
 
 # **Behavioral Cloning Project** 
 ## **Typographical Convention** 
@@ -10,26 +10,17 @@ The purposes of this project include
  - Teach a CNN to derive steering corrections from the camera images and steering angles recorded from a human driver.
 ### Required Project Files
  - **model.py** : train the model. **Important note**: this file imports the actual model definition from unit_tests/**model_gen0.py** as it was incorrectly anticipated that we would be experimenting with variations on the Nvidia model and other models.
+	 - **DataSet class**
+		 - creates a CsvParser instance
+		 - effects the train/test split
+		 - creates BatchGenerator instances
+	 -  **BatchGenerator class**:  As is my habit I packaged the generator code in class for ease of reuse. This caused a bit of a problem until I found, in [**generator-class**], that from a class object I need to use **return** and not **yield**.
+	 - **CsvParser class**: used by DataSet, which has a _csv_parser instance variable to read and parse the csv file and do some trivial data conditioning. All of this is done in the instance's __init__() method
+
  - **model.h5**: weights & compiled model saved from training phase
  - **drive.py**: the interface to the simulator modified to do the same preprocessing to the image as was done from model.py with the slight change that images from the simulator are RGB and the training data was in BGR format.
  - **video.mp4**: video composed by video.py from frames generated using the model to drive the simulator in autonomous mode.
- - -   **writeup_report.md**: this file
-### Ancillary Project Files
- - **BatchGenerator.py**:  As is my habit I packaged the generator code in class for ease of reuse. This caused a bit of a problem until I found, in [**generator-class**], that from a class object I need to use **return** and not **yield**.
- - **CsvParser.py**: used by DataSet, which has a _csv_parser instance variable to read and parse the csv file and do some trivial data conditioning. All of this is done in the instance's __init__() method
- - **DataSet.py**
-	 - creates a CsvParser instance
-	 - effets the train/test split
-	 - creates BatchGenerator instances
- - 
- - **parm_dict.py**:  no longer implemented as a dict but the name survives from ealier self driving car projects
- - **unit_tests**/* : tests of key functionality as it was developed
-	 - **model_gen0.py**: this is our initial and final model. Following the consensus of the literature and Student Hub, we used:
-	 - 
- - optimizer: adam 
- - learning rate: 0.001
- - loss function: mean squared error
-
+ -  **writeup_report.md**: this file
 ## **Dataset** 
 ### Collection
 When initial efforts to collect sufficient data seemed to be time consuming and probably generating insufficient training data, I ran across information, in the Student Hub, about a large Udacity provided dataset at [**udacity-dataset**]
@@ -107,7 +98,9 @@ Non-trainable params: 132
 
 ## Training Protocol
 The rudimentary protocol used was:
-
+ - optimizer: adam 
+ - learning rate: 0.001
+ - loss function: mean squared error
  - batch size = 64
  - N =1 
  - repeat
